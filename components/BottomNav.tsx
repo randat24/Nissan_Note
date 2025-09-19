@@ -23,7 +23,7 @@ export function BottomNav({ active }: { active: 'home' | 'journal' | 'catalog' |
   // treat it as the parts slot for layout consistency; however, the active
   // highlight still applies.
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
       <div className="container mx-auto max-w-md grid grid-cols-5 text-center py-2 text-xs">
         {items.map((item) => {
           const isActive = active === item.key || (active === 'fuel' && item.key === 'parts') || (active === 'reports' && item.key === 'parts') || (active === 'expenses' && item.key === 'parts');
@@ -31,8 +31,8 @@ export function BottomNav({ active }: { active: 'home' | 'journal' | 'catalog' |
             <a
               key={item.key}
               href={item.href}
-              className={`flex flex-col items-center justify-center gap-1 ${
-                isActive ? 'text-neutral-900 font-semibold' : 'text-gray-500'
+              className={`flex flex-col items-center justify-center gap-1 transition-colors duration-200 ${
+                isActive ? 'text-primary font-semibold' : 'text-gray-500 hover:text-secondary'
               }`}
             >
               <Icon name={item.icon} className="w-5 h-5" />

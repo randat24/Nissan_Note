@@ -8,7 +8,20 @@ const config: Config = {
     './src/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   theme: {
-    extend: {}
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#d62828',  // основний червоний
+          dark:   '#a4161a',
+          light:  '#e85d75',
+        },
+        secondary: {
+          DEFAULT: '#003049',  // глибокий синій
+          dark:   '#001f2e',
+          light:  '#669bbc',
+        },
+      },
+    },
   },
   plugins: []
 }

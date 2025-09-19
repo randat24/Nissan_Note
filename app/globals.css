@@ -5,5 +5,30 @@
 html,
 body {
   height: 100%;
-  background: #fafafa;
+  /* Нейтральний світлий фон і темний текст */
+  background: #f8f9fa;
+  color: #001f2e;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Утиліти для кольорів */
+@layer utilities {
+  .text-primary {
+    color: #d62828;
+  }
+  .bg-primary {
+    background-color: #d62828;
+  }
+  .text-secondary {
+    color: #003049;
+  }
+  .bg-secondary {
+    background-color: #003049;
+  }
+  .text-secondary-dark {
+    color: #001f2e;
+  }
+  .text-secondary-light {
+    color: #669bbc;
+  }
 }

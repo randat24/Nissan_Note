@@ -93,12 +93,12 @@ export default function HomePage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <div className="text-xs text-gray-500">Nissan Note</div>
-          <div className="text-lg font-semibold">
+          <div className="text-xs text-secondary-light">Nissan Note</div>
+          <div className="text-lg font-semibold text-secondary-dark">
             Пробег: {vehicle?.currentMileage?.toLocaleString('uk-UA') || 0} mi
           </div>
         </div>
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-secondary-light">
           {new Date().toLocaleDateString('ru-UA')}
         </div>
       </div>
@@ -106,7 +106,7 @@ export default function HomePage() {
       <div className="flex justify-end">
         <a
           href="/journal"
-          className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium border border-gray-200 bg-blue-600 text-white hover:bg-blue-700"
+          className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium border border-gray-200 bg-primary text-white hover:bg-primary-dark transition-colors duration-200"
         >
           + Запись
         </a>
@@ -144,7 +144,7 @@ export default function HomePage() {
                 <div className="flex flex-col gap-2">
                   <a
                     href={`/catalog/${tpl.id}`}
-                    className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+                    className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm border border-gray-200 bg-white hover:bg-secondary-light hover:text-white transition-colors duration-200"
                   >
                     Открыть
                   </a>
@@ -187,7 +187,7 @@ export default function HomePage() {
                 <div className="flex flex-col gap-2">
                   <a
                     href={`/catalog/${tpl.id}`}
-                    className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+                    className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm border border-gray-200 bg-white hover:bg-secondary-light hover:text-white transition-colors duration-200"
                   >
                     Открыть
                   </a>
@@ -230,7 +230,7 @@ export default function HomePage() {
                 <div className="flex flex-col gap-2">
                   <a
                     href={`/catalog/${tpl.id}`}
-                    className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+                    className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm border border-gray-200 bg-white hover:bg-secondary-light hover:text-white transition-colors duration-200"
                   >
                     Открыть
                   </a>

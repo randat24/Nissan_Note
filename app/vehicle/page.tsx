@@ -7,8 +7,7 @@
 // reuses shared UI components. A monochrome bottom navigation bar is
 // provided at the bottom.
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import { Download, Bell, Info, Wrench } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,7 +27,6 @@ import type { Vehicle } from "@/lib/types";
 import { Icon } from "@/components/Icon";
 
 export default function VehiclePage() {
-  const router = useRouter();
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [settings, setSettings] = useState({
     notificationsEnabled: false,
@@ -45,7 +43,7 @@ export default function VehiclePage() {
     setVehicle(veh || null);
   };
 
-  const handleVehicleUpdate = async (field: keyof Vehicle, value: any) => {
+  const handleVehicleUpdate = async (field: keyof Vehicle, value: string | number | boolean) => {
     if (!vehicle) return;
     await db.vehicles.update(vehicle.id, { [field]: value });
     loadVehicle();
@@ -99,7 +97,7 @@ export default function VehiclePage() {
                 id="year"
                 type="number"
                 value={vehicle.year || ""}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleVehicleUpdate("year", parseInt(e.target.value))
                 }
               />
@@ -109,7 +107,7 @@ export default function VehiclePage() {
               <Input
                 id="engine"
                 value={vehicle.engine || ""}
-                onChange={(e) => handleVehicleUpdate("engine", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleVehicleUpdate("engine", e.target.value)}
                 placeholder="HR15"
               />
             </div>
@@ -117,8 +115,8 @@ export default function VehiclePage() {
               <Label htmlFor="transmission">Трансмиссия</Label>
               <Select
                 value={vehicle.transmission || ""}
-                onValueChange={(value) =>
-                  handleVehicleUpdate("transmission", value as any)
+                onValueChange={(value: string) =>
+                  handleVehicleUpdate("transmission", value)
                 }
               >
                 <SelectTrigger>
@@ -155,7 +153,7 @@ export default function VehiclePage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="km">км</SelectItem>
+                    <SelectItem value="km">mi</SelectItem>
                     <SelectItem value="mi">mi</SelectItem>
                   </SelectContent>
                 </Select>
@@ -192,7 +190,7 @@ export default function VehiclePage() {
               />
             </div>
             <div>
-              <Label htmlFor="soonDistance">Предупреждать за (км)</Label>
+              <Label htmlFor="soonDistance">Предупреждать за (mi)</Label>
               <Input
                 id="soonDistance"
                 type="number"

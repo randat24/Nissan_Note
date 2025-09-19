@@ -50,14 +50,14 @@ export default function HomePage() {
       );
       const nextText = [
         typeof nextServiceMileage === 'number'
-          ? `км: ${nextServiceMileage.toLocaleString('uk-UA')}`
+          ? `mi: ${nextServiceMileage.toLocaleString('uk-UA')}`
           : null,
         nextServiceDate ? `до ${new Date(nextServiceDate).toLocaleDateString('ru-UA')}` : null,
       ]
         .filter(Boolean)
         .join(' · ');
       const lastText = last
-        ? `${new Date(last.date).toLocaleDateString('ru-UA')} · ${last.mileage.toLocaleString('uk-UA')} км`
+        ? `${new Date(last.date).toLocaleDateString('ru-UA')} · ${last.mileage.toLocaleString('uk-UA')} mi`
         : undefined;
       return { tpl, status, nextText, lastText };
     });
@@ -95,7 +95,7 @@ export default function HomePage() {
         <div>
           <div className="text-xs text-gray-500">Nissan Note</div>
           <div className="text-lg font-semibold">
-            Пробег: {vehicle?.currentMileage?.toLocaleString('uk-UA') || 0} км
+            Пробег: {vehicle?.currentMileage?.toLocaleString('uk-UA') || 0} mi
           </div>
         </div>
         <div className="text-xs text-gray-500">

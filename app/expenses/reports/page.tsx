@@ -143,11 +143,11 @@ export default function ReportsPage() {
             <div className="bg-white/20 rounded-lg p-2 text-center">
               <p className="text-xs opacity-90">Пробег</p>
               <p className="font-semibold">
-                {totalKm.toLocaleString()} км
+                {totalKm.toLocaleString()} mi
               </p>
             </div>
             <div className="bg-white/20 rounded-lg p-2 text-center">
-              <p className="text-xs opacity-90">грн/км</p>
+              <p className="text-xs opacity-90">грн/mi</p>
               <p className="font-semibold">
                 {costPerKm.toFixed(2)}
               </p>
@@ -261,7 +261,7 @@ export default function ReportsPage() {
 
         {/* Cost Breakdown */}
         <Card className="p-4">
-          <h3 className="font-semibold mb-3">Себестоимость километра</h3>
+          <h3 className="font-semibold mb-3">Себестоимость мили</h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm">Топливо</span>
@@ -269,7 +269,7 @@ export default function ReportsPage() {
                 {(
                   yearlyReport.monthlyData.reduce((sum, m) => sum + m.fuel, 0) /
                   (totalKm || 1)
-                ).toFixed(2)} грн/км
+                ).toFixed(2)} грн/mi
               </span>
             </div>
             <div className="flex justify-between items-center">
@@ -281,7 +281,7 @@ export default function ReportsPage() {
                     0
                   ) /
                   (totalKm || 1)
-                ).toFixed(2)} грн/км
+                ).toFixed(2)} грн/mi
               </span>
             </div>
             <div className="flex justify-between items-center">
@@ -290,13 +290,13 @@ export default function ReportsPage() {
                 {(
                   yearlyReport.monthlyData.reduce((sum, m) => sum + m.other, 0) /
                   (totalKm || 1)
-                ).toFixed(2)} грн/км
+                ).toFixed(2)} грн/mi
               </span>
             </div>
             <div className="pt-2 border-t flex justify-between items-center">
               <span className="font-medium">Итого</span>
               <span className="font-bold text-lg">
-                {costPerKm.toFixed(2)} грн/км
+                {costPerKm.toFixed(2)} грн/mi
               </span>
             </div>
           </div>

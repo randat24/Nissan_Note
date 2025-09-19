@@ -9,7 +9,7 @@ export function Button({
   size = 'md',
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'default' | 'outline';
+  variant?: 'default' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
 }) {
   const base =
@@ -17,6 +17,8 @@ export function Button({
   const v =
     variant === 'outline'
       ? 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+      : variant === 'ghost'
+      ? 'bg-transparent text-gray-700 hover:bg-gray-100'
       : 'bg-neutral-900 text-white hover:bg-neutral-800';
   const s =
     size === 'sm'

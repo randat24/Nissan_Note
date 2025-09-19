@@ -33,30 +33,39 @@ export const db = new AppDB();
 
 /**
  * Ensures that the database is populated with default templates and a default vehicle.
- * This is executed at module import time.
+ * This is executed at module import time, but only in browser environment.
  */
 async function ensureSeed() {
-  const count = await db.templates.count();
-  if (count === 0) {
-    await db.templates.bulkAdd(templates as any);
+  // Only run in browser environment
+  if (typeof window === 'undefined') {
+    return;
   }
-  const vehiclesCount = await db.vehicles.count();
-  if (vehiclesCount === 0) {
-    await db.vehicles.add({
-      id: 'note-01',
-      make: 'Nissan',
-      model: 'Note',
-      year: 2012,
-      engine: 'HR15',
-      transmission: 'CVT',
-      unitDistance: 'km',
-      currentMileage: 128450,
-      createdAt: new Date().toISOString().slice(0, 10),
-    });
+
+  try {
+    const count = await db.templates.count();
+    if (count === 0) {
+      await db.templates.bulkAdd(templates as any);
+    }
+    const vehiclesCount = await db.vehicles.count();
+    if (vehiclesCount === 0) {
+      await db.vehicles.add({
+        id: 'note-01',
+        make: 'Nissan',
+        model: 'Note',
+        year: 2012,
+        engine: 'HR15',
+        transmission: 'CVT',
+        unitDistance: 'mi',
+        currentMileage: 79815,
+        createdAt: new Date().toISOString().slice(0, 10),
+      });
+    }
+  } catch (err) {
+    console.error('Error seeding database:', err);
   }
 }
 
-// Kick off seeding when the module is loaded
-ensureSeed().catch((err) => {
-  console.error('Error seeding database:', err);
-});
+// Kick off seeding when the module is loaded, but only in browser
+if (typeof window !== 'undefined') {
+  ensureSeed();
+}

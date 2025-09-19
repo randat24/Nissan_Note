@@ -36,7 +36,7 @@ export default function ExpensesPage() {
           <div>
             <h2 className="font-semibold text-base">Отчёты</h2>
             <p className="text-sm text-gray-600 mt-1">
-              Анализируйте свои расходы и стоимость километра
+              Анализируйте свои расходы и стоимость мили
             </p>
           </div>
           <Icon name="reports" className="w-6 h-6 text-gray-400" />

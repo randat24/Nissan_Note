@@ -7,11 +7,22 @@ interface TabsContextValue {
 }
 const TabsContext = React.createContext<TabsContextValue | null>(null);
 
+export interface TabsProps {
+  value: string;
+  onValueChange: (v: string) => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
 /**
  * Root Tabs component providing context for triggers and content.
  */
-export function Tabs({ value, onValueChange, children }: { value: string; onValueChange: (v: string) => void; children: React.ReactNode }) {
-  return <TabsContext.Provider value={{ value, onValueChange }}>{children}</TabsContext.Provider>;
+export function Tabs({ value, onValueChange, children, className = '' }: TabsProps) {
+  return (
+    <div className={className}>
+      <TabsContext.Provider value={{ value, onValueChange }}>{children}</TabsContext.Provider>
+    </div>
+  );
 }
 
 export function TabsList({ className = '', children }: { className?: string; children: React.ReactNode }) {
@@ -32,8 +43,14 @@ export function TabsTrigger({ value, children }: { value: string; children: Reac
   );
 }
 
-export function TabsContent({ value, children }: { value: string; children: React.ReactNode }) {
+export interface TabsContentProps {
+  value: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function TabsContent({ value, children, className = '' }: TabsContentProps) {
   const ctx = React.useContext(TabsContext);
   if (!ctx || ctx.value !== value) return null;
-  return <div className="mt-3">{children}</div>;
+  return <div className={`mt-3 ${className}`}>{children}</div>;
 }

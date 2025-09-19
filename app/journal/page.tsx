@@ -50,7 +50,7 @@ function TimelineItem({ record, template, onClick }: TimelineItemProps) {
         <div className="space-y-1 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <Calendar className="w-3 h-3" />
-            {record.mileage.toLocaleString()} км
+            {record.mileage.toLocaleString()} mi
           </div>
           {record.location && (
             <div className="flex items-center gap-2">

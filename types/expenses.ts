@@ -12,7 +12,7 @@ export interface FuelRecord {
   station: string;
   fuelType: FuelType;
   fullTank: boolean;
-  consumption?: number;     // л/100км (если есть previousMileage + fullTank)
+  consumption?: number;     // л/100mi (если есть previousMileage + fullTank)
   note?: string;
 }
 

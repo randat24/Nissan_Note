@@ -8,9 +8,10 @@ import { computeNextDue, computeStatus } from '@/lib/logic';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BottomNav } from '@/components/BottomNav';
+import { use } from 'react';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 /**
@@ -18,7 +19,7 @@ interface PageProps {
  * specifications, next service prediction, and service history.
  */
 export default function CatalogDetailPage({ params }: PageProps) {
-  const id = params.id;
+  const { id } = use(params);
   const [template, setTemplate] = useState<MaintenanceTemplate | null>(null);
   const [records, setRecords] = useState<ServiceRecord[]>([]);
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
@@ -86,7 +87,7 @@ export default function CatalogDetailPage({ params }: PageProps) {
         <div className="text-sm text-gray-700">Интервал</div>
         <div className="text-sm">
           {template.intervalDistance
-            ? `${template.intervalDistance.toLocaleString('uk-UA')} км`
+            ? `${template.intervalDistance.toLocaleString('uk-UA')} mi`
             : '—'}
           {template.intervalDistance && template.intervalMonths ? ' · ' : ''}
           {template.intervalMonths ? `${template.intervalMonths} мес.` : ''}
@@ -110,7 +111,7 @@ export default function CatalogDetailPage({ params }: PageProps) {
         <div className="text-sm text-gray-700">Следующее обслуживание</div>
         <div className="text-sm">
           {typeof nextData.nextServiceMileage === 'number'
-            ? `км: ${nextData.nextServiceMileage.toLocaleString('uk-UA')}`
+            ? `mi: ${nextData.nextServiceMileage.toLocaleString('uk-UA')}`
             : '—'}
           {nextData.nextServiceMileage && nextData.nextServiceDate ? ' · ' : ''}
           {nextData.nextServiceDate
@@ -118,7 +119,7 @@ export default function CatalogDetailPage({ params }: PageProps) {
             : ''}
         </div>
         <div className="text-xs text-gray-500 mt-1">
-          Текущий пробег: {vehicle?.currentMileage?.toLocaleString('uk-UA') || 0} км
+          Текущий пробег: {vehicle?.currentMileage?.toLocaleString('uk-UA') || 0} mi
         </div>
       </Card>
       {/* History */}
@@ -130,7 +131,7 @@ export default function CatalogDetailPage({ params }: PageProps) {
         {records.map((r) => (
           <Card key={r.id} className="p-3 flex items-center justify-between">
             <div className="text-sm">
-              {new Date(r.date).toLocaleDateString('ru-UA')} · {r.mileage.toLocaleString('uk-UA')} км
+              {new Date(r.date).toLocaleDateString('ru-UA')} · {r.mileage.toLocaleString('uk-UA')} mi
             </div>
             <div className="text-sm text-gray-500">
               {r.cost ? `${r.cost.toLocaleString('uk-UA')} грн` : ''}

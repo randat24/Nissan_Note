@@ -69,7 +69,7 @@ function FuelEntryCard({ record, onClick }: FuelEntryCardProps) {
           <div className="text-xs text-gray-600 space-y-1">
             <p>
               {new Date(record.date).toLocaleDateString("ru-UA")} •{' '}
-              {record.mileage.toLocaleString()} км
+              {record.mileage.toLocaleString()} mi
             </p>
             <p>
               {record.liters} л {record.fuelType} @ {record.pricePerLiter}{' '}
@@ -83,7 +83,7 @@ function FuelEntryCard({ record, onClick }: FuelEntryCardProps) {
           </p>
           {record.consumption && (
             <p className={`text-xs font-medium ${consumptionColor}`}>
-              {record.consumption.toFixed(1)} л/100км
+              {record.consumption.toFixed(1)} л/100mi
             </p>
           )}
         </div>
@@ -213,7 +213,7 @@ export default function FuelPage() {
                 <div>
                   <p className="text-sm opacity-90">Средний расход</p>
                   <p className="text-3xl font-bold mt-1">
-                    {stats.avgConsumption.toFixed(1)} л/100км
+                    {stats.avgConsumption.toFixed(1)} л/100mi
                   </p>
                   <div className="flex items-center gap-4 mt-2 text-sm">
                     <span className="flex items-center gap-1">
@@ -245,7 +245,7 @@ export default function FuelPage() {
                   {stats.avgPrice.toFixed(2)} грн/л
                 </p>
                 <p className="text-sm text-gray-600">
-                  {stats.costPerKm.toFixed(2)} грн/км
+                  {stats.costPerKm.toFixed(2)} грн/mi
                 </p>
               </Card>
             </div>
@@ -293,7 +293,7 @@ export default function FuelPage() {
                 })}
             </div>
             <p className="text-xs text-gray-500 mt-2">
-              Зелёный: ≤7 л/100км • Жёлтый: 7‑9 л/100км • Красный: &gt;9 л/100км
+              Зелёный: ≤7 л/100mi • Жёлтый: 7‑9 л/100mi • Красный: &gt;9 л/100mi
             </p>
           </Card>
         )}
@@ -339,7 +339,7 @@ export default function FuelPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="mileage">Пробег сейчас (км) *</Label>
+                <Label htmlFor="mileage">Пробег сейчас (mi) *</Label>
                 <Input
                   id="mileage"
                   type="number"
@@ -373,7 +373,7 @@ export default function FuelPage() {
             {/* Previous Mileage (for consumption) */}
             {formData.fullTank && (
               <div>
-                <Label htmlFor="previousMileage">Пробег прошлой заправки (км)</Label>
+                <Label htmlFor="previousMileage">Пробег прошлой заправки (mi)</Label>
                 <Input
                   id="previousMileage"
                   type="number"
@@ -385,7 +385,7 @@ export default function FuelPage() {
                 />
                 {formData.previousMileage && formData.mileage && (
                   <p className="text-sm text-gray-600 mt-1">
-                    Проехали: {parseInt(formData.mileage) - parseInt(formData.previousMileage)} км
+                    Проехали: {parseInt(formData.mileage) - parseInt(formData.previousMileage)} mi
                   </p>
                 )}
               </div>
@@ -481,7 +481,7 @@ export default function FuelPage() {
                       (parseInt(formData.mileage) - parseInt(formData.previousMileage))) *
                     100
                   ).toFixed(1)}{' '}
-                  л/100км
+                  л/100mi
                 </p>
               </Card>
             )}

@@ -28,7 +28,7 @@ export default function CatalogPage() {
               <div className="font-medium text-sm mb-1">{tpl.title}</div>
               <div className="text-xs text-gray-500">
                 {tpl.intervalDistance
-                  ? `Интервал: ${tpl.intervalDistance.toLocaleString('uk-UA')} км`
+                  ? `Интервал: ${tpl.intervalDistance.toLocaleString('uk-UA')} mi`
                   : ''}
                 {tpl.intervalDistance && tpl.intervalMonths ? ' · ' : ''}
                 {tpl.intervalMonths ? `${tpl.intervalMonths} мес.` : ''}

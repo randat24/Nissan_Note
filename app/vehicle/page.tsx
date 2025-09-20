@@ -1,30 +1,12 @@
 "use client";
 
-// Vehicle settings page. Allows editing vehicle information (year, engine,
-// transmission, current mileage, units) and managing data import/export.
-// Also includes toggle for push notifications and configuration of
-// thresholds for "soon" reminders. Uses Dexie for data persistence and
-// reuses shared UI components. A monochrome bottom navigation bar is
-// provided at the bottom.
-
 import React, { useState, useEffect } from "react";
 import { Download, Bell, Info, Wrench } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { db } from "@/lib/dexie-schema-extended";
 import { exportData, importData } from "@/lib/export-import";
 import type { Vehicle } from "@/lib/types";
 import { Icon } from "@/components/Icon";
+import { BottomNav } from "@/components/BottomNav";
 
 export default function VehiclePage() {
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
@@ -76,64 +58,96 @@ export default function VehiclePage() {
   };
 
   if (!vehicle) {
-    return <div className="p-4">Загрузка…</div>;
+    return (
+      <div style={{padding: '2rem', textAlign: 'center'}}>
+        <div style={{color: '#6b7280'}}>Загрузка…</div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="bg-white border-b px-4 py-3">
-        <h1 className="text-xl font-semibold">Настройки авто</h1>
-      </div>
-      <div className="p-4 space-y-4">
+    <div style={{minHeight: '100vh', paddingBottom: '5rem'}}>
+      {/* Header */}
+      <header style={{padding: '1.5rem', background: 'linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #f3e8ff 100%)'}}>
+        <h1 className="gradient-text" style={{fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem'}}>Настройки авто</h1>
+        <p style={{color: '#6b7280', fontSize: '1rem'}}>Управление информацией об автомобиле и настройками</p>
+      </header>
+
+      <div style={{padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
         {/* Vehicle Info */}
-        <Card className="p-4">
-          <h2 className="font-semibold mb-3 flex items-center gap-2">
-            <Info className="w-4 h-4" /> Информация об авто
+        <div className="card-modern" style={{padding: '1.5rem'}}>
+          <h2 style={{fontWeight: '600', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.125rem'}}>
+            <Info style={{width: '20px', height: '20px'}} /> Информация об авто
           </h2>
-          <div className="space-y-3">
+          <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
             <div>
-              <Label htmlFor="year">Год выпуска</Label>
-              <Input
-                id="year"
+              <label style={{display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem', color: '#374151'}}>
+                Год выпуска
+              </label>
+              <input
                 type="number"
                 value={vehicle.year || ""}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleVehicleUpdate("year", parseInt(e.target.value))
                 }
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: 'white'
+                }}
               />
             </div>
+            
             <div>
-              <Label htmlFor="engine">Двигатель</Label>
-              <Input
-                id="engine"
+              <label style={{display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem', color: '#374151'}}>
+                Двигатель
+              </label>
+              <input
                 value={vehicle.engine || ""}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleVehicleUpdate("engine", e.target.value)}
                 placeholder="HR15"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: 'white'
+                }}
               />
             </div>
+            
             <div>
-              <Label htmlFor="transmission">Трансмиссия</Label>
-              <Select
+              <label style={{display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem', color: '#374151'}}>
+                Трансмиссия
+              </label>
+              <select
                 value={vehicle.transmission || ""}
-                onValueChange={(value: string) =>
-                  handleVehicleUpdate("transmission", value)
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  handleVehicleUpdate("transmission", e.target.value)
                 }
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: 'white'
+                }}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Выберите тип" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="MT">МКПП</SelectItem>
-                  <SelectItem value="AT">АКПП</SelectItem>
-                  <SelectItem value="CVT">Вариатор</SelectItem>
-                </SelectContent>
-              </Select>
+                <option value="">Выберите тип</option>
+                <option value="MT">МКПП</option>
+                <option value="AT">АКПП</option>
+                <option value="CVT">Вариатор</option>
+              </select>
             </div>
+            
             <div>
-              <Label htmlFor="mileage">Текущий пробег</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="mileage"
+              <label style={{display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem', color: '#374151'}}>
+                Текущий пробег
+              </label>
+              <div style={{display: 'flex', gap: '0.5rem'}}>
+                <input
                   type="number"
                   value={vehicle.currentMileage}
                   onChange={(e) =>
@@ -142,43 +156,76 @@ export default function VehiclePage() {
                       parseInt(e.target.value)
                     )
                   }
+                  style={{
+                    flex: 1,
+                    padding: '0.75rem',
+                    borderRadius: '0.5rem',
+                    border: '1px solid #d1d5db',
+                    backgroundColor: 'white'
+                  }}
                 />
-                <Select
+                <select
                   value={vehicle.unitDistance}
-                  onValueChange={(value) =>
-                    handleVehicleUpdate("unitDistance", value as any)
+                  onChange={(e) =>
+                    handleVehicleUpdate("unitDistance", e.target.value as any)
                   }
+                  style={{
+                    width: '80px',
+                    padding: '0.75rem',
+                    borderRadius: '0.5rem',
+                    border: '1px solid #d1d5db',
+                    backgroundColor: 'white'
+                  }}
                 >
-                  <SelectTrigger className="w-24">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="km">mi</SelectItem>
-                    <SelectItem value="mi">mi</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <option value="km">km</option>
+                  <option value="mi">mi</option>
+                </select>
               </div>
             </div>
           </div>
-        </Card>
+        </div>
+
         {/* Notifications */}
-        <Card className="p-4">
-          <h2 className="font-semibold mb-3 flex items-center gap-2">
-            <Bell className="w-4 h-4" /> Уведомления
+        <div className="card-modern" style={{padding: '1.5rem'}}>
+          <h2 style={{fontWeight: '600', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.125rem'}}>
+            <Bell style={{width: '20px', height: '20px'}} /> Уведомления
           </h2>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="notifications">Push‑уведомления</Label>
-              <Switch
-                id="notifications"
-                checked={settings.notificationsEnabled}
-                onCheckedChange={requestNotifications}
-              />
+          <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+              <label style={{fontSize: '0.875rem', fontWeight: '500', color: '#374151'}}>
+                Push‑уведомления
+              </label>
+              <button
+                onClick={requestNotifications}
+                style={{
+                  width: '44px',
+                  height: '24px',
+                  borderRadius: '12px',
+                  backgroundColor: settings.notificationsEnabled ? '#2563eb' : '#d1d5db',
+                  border: 'none',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  transition: 'background-color 0.2s'
+                }}
+              >
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  backgroundColor: 'white',
+                  position: 'absolute',
+                  top: '2px',
+                  left: settings.notificationsEnabled ? '22px' : '2px',
+                  transition: 'left 0.2s'
+                }}></div>
+              </button>
             </div>
+            
             <div>
-              <Label htmlFor="soonDays">Предупреждать за (дней)</Label>
-              <Input
-                id="soonDays"
+              <label style={{display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem', color: '#374151'}}>
+                Предупреждать за (дней)
+              </label>
+              <input
                 type="number"
                 value={settings.soonThresholdDays}
                 onChange={(e) =>
@@ -187,12 +234,21 @@ export default function VehiclePage() {
                     soonThresholdDays: parseInt(e.target.value),
                   })
                 }
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: 'white'
+                }}
               />
             </div>
+            
             <div>
-              <Label htmlFor="soonDistance">Предупреждать за (mi)</Label>
-              <Input
-                id="soonDistance"
+              <label style={{display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem', color: '#374151'}}>
+                Предупреждать за (km)
+              </label>
+              <input
                 type="number"
                 value={settings.soonThresholdDistance}
                 onChange={(e) =>
@@ -201,69 +257,71 @@ export default function VehiclePage() {
                     soonThresholdDistance: parseInt(e.target.value),
                   })
                 }
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: 'white'
+                }}
               />
             </div>
           </div>
-        </Card>
+        </div>
+
         {/* Data Management */}
-        <Card className="p-4">
-          <h2 className="font-semibold mb-3 flex items-center gap-2">
-            <Wrench className="w-4 h-4" /> Управление данными
+        <div className="card-modern" style={{padding: '1.5rem'}}>
+          <h2 style={{fontWeight: '600', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.125rem'}}>
+            <Wrench style={{width: '20px', height: '20px'}} /> Управление данными
           </h2>
-          <div className="space-y-3">
-            <Button
-              variant="outline"
-              className="w-full"
+          <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+            <button
+              className="btn-secondary"
               onClick={handleExport}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem'
+              }}
             >
-              <Download className="w-4 h-4 mr-2" /> Экспорт данных (JSON)
-            </Button>
+              <Download style={{width: '16px', height: '16px'}} /> Экспорт данных (JSON)
+            </button>
+            
             <div>
-              <Label htmlFor="import" className="block mb-2">
+              <label style={{display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem', color: '#374151'}}>
                 Импорт данных
-              </Label>
-              <Input
-                id="import"
+              </label>
+              <input
                 type="file"
                 accept=".json"
                 onChange={handleImport}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid #d1d5db',
+                  backgroundColor: 'white'
+                }}
               />
             </div>
           </div>
-        </Card>
+        </div>
+
         {/* About */}
-        <Card className="p-4">
-          <h2 className="font-semibold mb-3">О приложении</h2>
-          <div className="text-sm text-gray-600 space-y-1">
+        <div className="card-modern" style={{padding: '1.5rem'}}>
+          <h2 style={{fontWeight: '600', marginBottom: '1rem', fontSize: '1.125rem'}}>О приложении</h2>
+          <div style={{fontSize: '0.875rem', color: '#6b7280', display: 'flex', flexDirection: 'column', gap: '0.25rem'}}>
             <p>Nissan Note Service Tracker v1.0</p>
             <p>Личный журнал обслуживания</p>
-            <p className="text-xs mt-2">© 2025 • Built with ❤️ for Note owners</p>
+            <p style={{fontSize: '0.75rem', marginTop: '0.5rem'}}>© 2025 • Built with ❤️ for Note owners</p>
           </div>
-        </Card>
-      </div>
-      {/* Bottom navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="container mx-auto max-w-md grid grid-cols-5 text-center py-2 text-xs">
-          {[
-            { key: "home", href: "/", label: "Домой", icon: "home" },
-            { key: "journal", href: "/journal", label: "Журнал", icon: "journal" },
-            { key: "catalog", href: "/catalog", label: "Каталог", icon: "catalog" },
-            { key: "parts", href: "/parts", label: "Запчасти", icon: "parts" },
-            { key: "vehicle", href: "/vehicle", label: "Авто", icon: "vehicle", active: true },
-          ].map((item) => (
-            <a
-              key={item.key}
-              href={item.href}
-              className={`flex flex-col items-center justify-center gap-1 ${
-                item.active ? "text-neutral-900 font-semibold" : "text-gray-500"
-              }`}
-            >
-              <Icon name={item.icon as any} className="w-5 h-5" />
-              <span>{item.label}</span>
-            </a>
-          ))}
         </div>
-      </nav>
+      </div>
+      
+      <BottomNav active="vehicle" />
     </div>
   );
 }

@@ -1,46 +1,68 @@
-import React from 'react';
-import { Icon } from './Icon';
+import Link from 'next/link'
+import { Icon } from './Icon'
 
-/**
- * Bottom navigation bar used across multiple pages. Pass in the active
- * route key to highlight the corresponding nav item. The component
- * renders simple anchor tags; navigation is performed via full page
- * reloads. If you wish to use client-side navigation, replace the
- * anchors with Link components from next/navigation.
- */
-export function BottomNav({ active }: { active: 'home' | 'journal' | 'catalog' | 'parts' | 'vehicle' | 'expenses' | 'fuel' | 'reports' }) {
-  // Define the routes and their labels/icons. Some routes share the
-  // same underlying page (e.g., the top-level expenses page), but we
-  // differentiate on the nav for clarity.
-  const items: Array<{ key: typeof active; href: string; label: string; icon: typeof active }> = [
-    { key: 'home', href: '/', label: 'Домой', icon: 'home' },
-    { key: 'journal', href: '/journal', label: 'Журнал', icon: 'journal' },
-    { key: 'catalog', href: '/catalog', label: 'Каталог', icon: 'catalog' },
-    { key: 'parts', href: '/parts', label: 'Запчасти', icon: 'parts' },
-    { key: 'vehicle', href: '/vehicle', label: 'Авто', icon: 'vehicle' },
-  ];
-  // If the active route corresponds to a sub-route under expenses (fuel or reports),
-  // treat it as the parts slot for layout consistency; however, the active
-  // highlight still applies.
+type Tab = 'home' | 'journal' | 'catalog' | 'parts' | 'vehicle' | 'expenses' | 'fuel' | 'reports'
+
+export function BottomNav({ active }: { active: Tab }) {
+  const items: Array<{ key: Tab; href: string; label: string; icon: Tab }> = [
+    { key: 'home',     href: '/',            label: 'Домой',     icon: 'home' },
+    { key: 'journal',  href: '/journal',     label: 'Журнал',    icon: 'journal' },
+    { key: 'catalog',  href: '/catalog',     label: 'Каталог',   icon: 'catalog' },
+    { key: 'parts',    href: '/parts',       label: 'Запчасти',  icon: 'parts' },
+    { key: 'vehicle',  href: '/vehicle',     label: 'Авто',      icon: 'vehicle' },
+  ]
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
-      <div className="container mx-auto max-w-md grid grid-cols-5 text-center py-2 text-xs">
-        {items.map((item) => {
-          const isActive = active === item.key || (active === 'fuel' && item.key === 'parts') || (active === 'reports' && item.key === 'parts') || (active === 'expenses' && item.key === 'parts');
-          return (
-            <a
-              key={item.key}
-              href={item.href}
-              className={`flex flex-col items-center justify-center gap-1 transition-colors duration-200 ${
-                isActive ? 'text-primary font-semibold' : 'text-gray-500 hover:text-secondary'
-              }`}
-            >
-              <Icon name={item.icon} className="w-5 h-5" />
-              <span>{item.label}</span>
-            </a>
-          );
-        })}
+    <nav style={{
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      zIndex: 40,
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      backdropFilter: 'blur(8px)',
+      borderTop: '1px solid rgba(0, 0, 0, 0.05)'
+    }}>
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '0 1rem'
+      }}>
+        <ul style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(5, 1fr)',
+          padding: '0.5rem 0',
+          margin: 0,
+          listStyle: 'none'
+        }}>
+          {items.map((item) => {
+            const isActive =
+              active === item.key ||
+              (['fuel','reports','expenses'].includes(active) && item.key === 'parts')
+
+            return (
+              <li key={item.key} style={{display: 'flex', justifyContent: 'center'}}>
+                <Link
+                  href={item.href}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    fontSize: '0.75rem',
+                    textDecoration: 'none',
+                    color: isActive ? '#2563eb' : '#6b7280',
+                    transition: 'color 0.2s'
+                  }}
+                >
+                  <Icon name={item.icon} size={24} />
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
       </div>
     </nav>
-  );
+  )
 }

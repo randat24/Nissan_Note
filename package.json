@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
     "@tailwindcss/postcss": "^4.1.13",
     "autoprefixer": "latest",
+    "clsx": "^2.1.1",
     "date-fns": "latest",
     "dexie": "latest",
-    "lucide-react": "latest",
+    "lucide-react": "^0.544.0",
     "next": "latest",
     "postcss": "latest",
     "react": "latest",
@@ -27,6 +29,8 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
     "eslint": "latest",
     "eslint-config-next": "latest"
   }

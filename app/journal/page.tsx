@@ -3,14 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Calendar, MapPin, FileText } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { db } from '@/lib/dexie-schema-extended';
 import type { ServiceRecord, MaintenanceTemplate } from '@/lib/types';
 import { BottomNav } from '@/components/BottomNav';
@@ -31,41 +23,51 @@ function TimelineItem({ record, template, onClick }: TimelineItemProps) {
     new Date(date).toLocaleDateString('ru-UA', { month: 'short' }).toUpperCase();
   const formatDay = (date: string) => new Date(date).getDate();
   return (
-    <div className="flex gap-3">
+    <div style={{display: 'flex', gap: '0.75rem', marginBottom: '1rem'}}>
       {/* Date badge */}
-      <div className="flex-shrink-0 text-center">
-        <div className="bg-blue-500 text-white rounded-lg px-3 py-2">
-          <div className="text-xs">{formatMonth(record.date)}</div>
-          <div className="text-xl font-bold">{formatDay(record.date)}</div>
+      <div style={{flexShrink: 0, textAlign: 'center'}}>
+        <div style={{
+          backgroundColor: '#2563eb',
+          color: 'white',
+          borderRadius: '0.5rem',
+          padding: '0.75rem',
+          minWidth: '60px'
+        }}>
+          <div style={{fontSize: '0.75rem'}}>{formatMonth(record.date)}</div>
+          <div style={{fontSize: '1.25rem', fontWeight: 'bold'}}>{formatDay(record.date)}</div>
         </div>
       </div>
       {/* Content card */}
-      <Card className="flex-1 p-3 cursor-pointer hover:shadow-md transition-all" onClick={onClick}>
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="font-medium">{template.title}</h3>
+      <div 
+        className="card-modern" 
+        style={{flex: 1, padding: '1rem', cursor: 'pointer'}}
+        onClick={onClick}
+      >
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem'}}>
+          <h3 style={{fontWeight: '600', fontSize: '1rem'}}>{template.title}</h3>
           {record.cost && (
-            <span className="text-sm font-semibold text-gray-700">{record.cost} грн</span>
+            <span style={{fontSize: '0.875rem', fontWeight: '600', color: '#374151'}}>{record.cost} грн</span>
           )}
         </div>
-        <div className="space-y-1 text-sm text-gray-600">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-3 h-3" />
+        <div style={{display: 'flex', flexDirection: 'column', gap: '0.25rem'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#6b7280'}}>
+            <Calendar style={{width: '12px', height: '12px'}} />
             {record.mileage.toLocaleString()} mi
           </div>
           {record.location && (
-            <div className="flex items-center gap-2">
-              <MapPin className="w-3 h-3" />
+            <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#6b7280'}}>
+              <MapPin style={{width: '12px', height: '12px'}} />
               {record.location}
             </div>
           )}
           {record.note && (
-            <div className="flex items-center gap-2">
-              <FileText className="w-3 h-3" />
+            <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#6b7280'}}>
+              <FileText style={{width: '12px', height: '12px'}} />
               {record.note}
             </div>
           )}
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
@@ -130,56 +132,70 @@ export default function JournalPage() {
   const avgCost = filteredRecords.length > 0 ? Math.round(totalCost / filteredRecords.length) : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="bg-white border-b px-4 py-3">
-        <h1 className="text-xl font-semibold mb-3">Журнал обслуживания</h1>
+    <div style={{minHeight: '100vh', paddingBottom: '5rem'}}>
+      {/* Header */}
+      <header style={{padding: '1.5rem', background: 'linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #f3e8ff 100%)'}}>
+        <h1 className="gradient-text" style={{fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem'}}>Журнал обслуживания</h1>
+        
         {/* Summary stats */}
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          <div className="bg-gray-50 rounded-lg p-2 text-center">
-            <div className="text-xs text-gray-500">Записей</div>
-            <div className="text-lg font-semibold">{filteredRecords.length}</div>
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '1rem'}}>
+          <div className="card-modern" style={{padding: '1rem', textAlign: 'center'}}>
+            <div style={{fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem'}}>Записей</div>
+            <div style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#111827'}}>{filteredRecords.length}</div>
           </div>
-          <div className="bg-gray-50 rounded-lg p-2 text-center">
-            <div className="text-xs text-gray-500">Потрачено</div>
-            <div className="text-lg font-semibold">{totalCost.toLocaleString()} грн</div>
+          <div className="card-modern" style={{padding: '1rem', textAlign: 'center'}}>
+            <div style={{fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem'}}>Потрачено</div>
+            <div style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#111827'}}>{totalCost.toLocaleString()} грн</div>
           </div>
-          <div className="bg-gray-50 rounded-lg p-2 text-center">
-            <div className="text-xs text-gray-500">Ср. чек</div>
-            <div className="text-lg font-semibold">{avgCost.toLocaleString()} грн</div>
+          <div className="card-modern" style={{padding: '1rem', textAlign: 'center'}}>
+            <div style={{fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.25rem'}}>Ср. чек</div>
+            <div style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#111827'}}>{avgCost.toLocaleString()} грн</div>
           </div>
         </div>
+        
         {/* Filters */}
-        <div className="grid grid-cols-2 gap-2">
-          <Select value={filterTemplate} onValueChange={setFilterTemplate}>
-            <SelectTrigger className="h-9">
-              <SelectValue placeholder="Все узлы" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Все узлы</SelectItem>
-              {Array.from(templates.values()).map((t) => (
-                <SelectItem key={t.id} value={t.id}>
-                  {t.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select value={filterPeriod} onValueChange={setFilterPeriod}>
-            <SelectTrigger className="h-9">
-              <SelectValue placeholder="Весь период" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Весь период</SelectItem>
-              <SelectItem value="month">Месяц</SelectItem>
-              <SelectItem value="quarter">Квартал</SelectItem>
-              <SelectItem value="year">Год</SelectItem>
-            </SelectContent>
-          </Select>
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem'}}>
+          <select 
+            value={filterTemplate} 
+            onChange={(e) => setFilterTemplate(e.target.value)}
+            style={{
+              padding: '0.75rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #d1d5db',
+              backgroundColor: 'white',
+              fontSize: '0.875rem'
+            }}
+          >
+            <option value="all">Все узлы</option>
+            {Array.from(templates.values()).map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.title}
+              </option>
+            ))}
+          </select>
+          <select 
+            value={filterPeriod} 
+            onChange={(e) => setFilterPeriod(e.target.value)}
+            style={{
+              padding: '0.75rem',
+              borderRadius: '0.5rem',
+              border: '1px solid #d1d5db',
+              backgroundColor: 'white',
+              fontSize: '0.875rem'
+            }}
+          >
+            <option value="all">Весь период</option>
+            <option value="month">Месяц</option>
+            <option value="quarter">Квартал</option>
+            <option value="year">Год</option>
+          </select>
         </div>
-      </div>
+      </header>
+      
       {/* Timeline */}
-      <div className="p-4">
+      <div style={{padding: '1rem'}}>
         {filteredRecords.length > 0 ? (
-          <div className="space-y-4">
+          <div>
             {filteredRecords.map((record) => {
               const template = templates.get(record.templateId);
               if (!template) return null;
@@ -196,12 +212,13 @@ export default function JournalPage() {
             })}
           </div>
         ) : (
-          <Card className="p-8 text-center text-gray-500">
-            <Calendar className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+          <div className="card-modern" style={{padding: '2rem', textAlign: 'center', color: '#6b7280'}}>
+            <Calendar style={{width: '3rem', height: '3rem', margin: '0 auto 0.5rem', color: '#d1d5db'}} />
             Нет записей за выбранный период
-          </Card>
+          </div>
         )}
       </div>
+      
       {/* Bottom navigation */}
       <BottomNav active="journal" />
     </div>
